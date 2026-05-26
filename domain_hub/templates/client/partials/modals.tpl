@@ -2681,7 +2681,7 @@ $permReasonMap = [
 </div>
 <?php endif; ?>
 <div class="modal fade" id="renewDisplayModeModal" tabindex="-1" aria-labelledby="renewDisplayModeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="margin-top: 3.5rem;">
+    <div class="modal-dialog modal-dialog-centered" style="margin-top: -170px;">
         <div class="modal-content">
             <form method="post">
                 <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">
@@ -2710,6 +2710,16 @@ $permReasonMap = [
                     <button type="submit" class="btn btn-primary"><?php echo $modalText('cfclient.subdomains.renew_mode.save', '保存设置'); ?></button>
                 </div>
             </form>
+            <div class="px-3 pb-3">
+                <div class="small text-muted border-top pt-2">
+                    <div><strong><?php echo $modalText('cfclient.subdomains.renew_mode.faq.q1', 'Q：域名续期是免费的吗？'); ?></strong></div>
+                    <div class="mb-2"><?php echo $modalText('cfclient.subdomains.renew_mode.faq.a1', 'A：是的，域名续期操作是完全免费的。'); ?></div>
+                    <div><strong><?php echo $modalText('cfclient.subdomains.renew_mode.faq.q2', 'Q：什么时候可以对域名进行续期？'); ?></strong></div>
+                    <div class="mb-2"><?php echo $modalText('cfclient.subdomains.renew_mode.faq.a2', 'A：域名到期前 180 天之内，可通过控制台或使用 API 一键续期。'); ?></div>
+                    <div><strong><?php echo $modalText('cfclient.subdomains.renew_mode.faq.q3', 'Q：为什么有的域名不显示续期选项？'); ?></strong></div>
+                    <div><?php echo $modalText('cfclient.subdomains.renew_mode.faq.a3', 'A：域名处于待删除状态或永久有效状态时，不会显示续期选项。'); ?></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

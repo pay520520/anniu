@@ -941,6 +941,20 @@ class CfModuleInstaller
                         $table->index('expires_at', 'idx_cf_rate_expires');
                     });
                 }
+
+                if (!Capsule::schema()->hasTable('mod_cloudflare_user_preferences')) {
+                    Capsule::schema()->create('mod_cloudflare_user_preferences', function ($table) {
+                        $table->increments('id');
+                        $table->integer('userid')->unsigned()->unique();
+                        $table->string('renew_button_display_mode', 32)->default('window_only');
+                        $table->timestamps();
+                        $table->index(['renew_button_display_mode']);
+                    });
+                } elseif (!Capsule::schema()->hasColumn('mod_cloudflare_user_preferences', 'renew_button_display_mode')) {
+                    Capsule::schema()->table('mod_cloudflare_user_preferences', function ($table) {
+                        $table->string('renew_button_display_mode', 32)->default('window_only');
+                    });
+                }
         
                 // 公共 WHOIS 速率限制表
                 if (!Capsule::schema()->hasTable('mod_cloudflare_whois_rate_limit')) {

@@ -29,6 +29,11 @@
                                 <div class="col-auto">
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> <?php echo cfclient_lang('cfclient.subdomains.search.button', '搜索', [], true); ?></button>
                                 </div>
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#renewDisplayModeModal">
+                                        <i class="fas fa-sliders-h"></i> <?php echo cfclient_lang('cfclient.subdomains.renew_mode.button', '续期显示设置', [], true); ?>
+                                    </button>
+                                </div>
                                 <?php if ($domainSearchTerm !== ''): ?>
                                 <div class="col-auto">
                                     <a href="<?php echo htmlspecialchars($domainSearchClearUrl, ENT_QUOTES); ?>" class="btn btn-outline-secondary"><i class="fas fa-undo"></i> <?php echo cfclient_lang('cfclient.subdomains.search.clear', '清除搜索', [], true); ?></a>
@@ -84,6 +89,10 @@
                                     if ($redemptionDaysSetting < 0) { $redemptionDaysSetting = 0; }
                                     $redemptionSecondsSetting = $redemptionDaysSetting * 86400;
                                     $rootMaintenanceMap = $rootMaintenanceMap ?? [];
+                                    $renewButtonDisplayMode = strtolower(trim((string) ($renewButtonDisplayMode ?? 'window_only')));
+                                    if (!in_array($renewButtonDisplayMode, ['always', 'window_only'], true)) {
+                                        $renewButtonDisplayMode = 'window_only';
+                                    }
                                     foreach($existing as $e):
                                         $neverExpires = intval($e->never_expires ?? 0) === 1;
                                         $expiresRaw = $e->expires_at ?? null;
@@ -318,7 +327,13 @@
                                                     <i class="fas fa-eye"></i> <?php echo cfclient_lang('cfclient.subdomains.button.view_details', '查看详情', [], true); ?>
                                                 </button>
                                             </div>
-                                            <?php if ($renewButtonEligible && !$pendingDelete && !($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge')): ?>
+                                            <?php
+                                                $shouldRenderRenewButton = $renewButtonEligible;
+                                                if ($shouldRenderRenewButton && $renewButtonDisplayMode === 'window_only') {
+                                                    $shouldRenderRenewButton = $canRenew || $canRedeemWithCharge;
+                                                }
+                                            ?>
+                                            <?php if ($shouldRenderRenewButton && !$pendingDelete && !($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge')): ?>
                                             <?php
                                                 $renewButtonText = $canRedeemWithCharge
                                                     ? cfclient_lang('cfclient.subdomains.button.renew.redeem', '赎回期续费（扣费￥%s）', [number_format($redemptionFeeSetting, 2)], true)
@@ -668,6 +683,40 @@
                             </div>
                         <?php endif; ?>
                     <?php endif; ?>
+                </div>
+            </div>
+
+            <div class="modal fade" id="renewDisplayModeModal" tabindex="-1" aria-labelledby="renewDisplayModeModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form method="post">
+                            <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">
+                            <input type="hidden" name="action" value="set_renew_button_display_mode">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="renewDisplayModeModalLabel"><?php echo cfclient_lang('cfclient.subdomains.renew_mode.modal_title', '免费续期显示设置', [], true); ?></h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <?php $currentRenewMode = strtolower(trim((string) ($renewButtonDisplayMode ?? 'window_only'))); ?>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="renew_button_display_mode" id="renewModeWindowOnly" value="window_only" <?php echo $currentRenewMode !== 'always' ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="renewModeWindowOnly">
+                                        <?php echo cfclient_lang('cfclient.subdomains.renew_mode.window_only', '到免费续期窗口时显示（推荐）', [], true); ?>
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="renew_button_display_mode" id="renewModeAlways" value="always" <?php echo $currentRenewMode === 'always' ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="renewModeAlways">
+                                        <?php echo cfclient_lang('cfclient.subdomains.renew_mode.always', '固定显示（当前模式）', [], true); ?>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo cfclient_lang('cfclient.subdomains.renew_mode.cancel', '取消', [], true); ?></button>
+                                <button type="submit" class="btn btn-primary"><?php echo cfclient_lang('cfclient.subdomains.renew_mode.save', '保存设置', [], true); ?></button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             

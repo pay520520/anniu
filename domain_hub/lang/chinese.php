@@ -210,10 +210,16 @@ $_LANG['cfclient.subdomains.button.view_details'] = '查看详情';
 $_LANG['cfclient.subdomains.button.dns_unlock'] = 'DNS解锁';
 $_LANG['cfclient.subdomains.button.invite_registration'] = '邀请注册';
 $_LANG['cfclient.subdomains.button.renew.free'] = '免费续期';
-$_LANG['cfclient.subdomains.renew_mode.button'] = '续期域名显示设置';
+$_LANG['cfclient.subdomains.renew_mode.button'] = '域名续期按钮显示设置';
 $_LANG['cfclient.subdomains.renew_mode.modal_title'] = '域名免费续期操作按钮显示设置';
-$_LANG['cfclient.subdomains.renew_mode.window_only'] = '到免费续期时间时自动显示（推荐）';
-$_LANG['cfclient.subdomains.renew_mode.always'] = '始终显示(域名未到续期时间也显示)';
+$_LANG['cfclient.subdomains.renew_mode.window_only'] = '到达可续期时间时自动显示（推荐）';
+$_LANG['cfclient.subdomains.renew_mode.always'] = '始终显示（未到可续期时间也显示）';
+$_LANG['cfclient.subdomains.renew_mode.cancel'] = '取消';
+$_LANG['cfclient.subdomains.renew_mode.save'] = '保存设置';
+$_LANG['cfclient.actions.renew.display.mode.login_required'] = '未找到登录信息，请刷新页面后重试。';
+$_LANG['cfclient.actions.renew.display.mode.saved.always'] = '续期按钮显示模式已设置为：始终显示。';
+$_LANG['cfclient.actions.renew.display.mode.saved.window_only'] = '续期按钮显示模式已设置为：到达可续期时间时自动显示。';
+$_LANG['cfclient.actions.renew.display.mode.save_failed'] = '续期按钮显示模式保存失败：%s';
 
 // 邀请注册功能
 $_LANG['cfclient.invite_registration.title'] = '邀请注册';

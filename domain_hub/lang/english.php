@@ -211,10 +211,16 @@ $_LANG['cfclient.subdomains.button.view_details'] = 'View details';
 $_LANG['cfclient.subdomains.button.dns_unlock'] = 'DNS Unlock';
 $_LANG['cfclient.subdomains.button.invite_registration'] = 'Invite Registration';
 $_LANG['cfclient.subdomains.button.renew.free'] = 'Renew for free';
-$_LANG['cfclient.subdomains.renew_mode.button'] = 'Renewal Domain Display Settings';
+$_LANG['cfclient.subdomains.renew_mode.button'] = 'Domain Renew Button Display Settings';
 $_LANG['cfclient.subdomains.renew_mode.modal_title'] = 'Free-Renew Domain Action Button Display Settings';
-$_LANG['cfclient.subdomains.renew_mode.window_only'] = 'Auto show when free-renew time arrives (Recommended)';
-$_LANG['cfclient.subdomains.renew_mode.always'] = 'Always show (visible even before renew time)';
+$_LANG['cfclient.subdomains.renew_mode.window_only'] = 'Auto show when renewable time is reached (Recommended)';
+$_LANG['cfclient.subdomains.renew_mode.always'] = 'Always show (visible even before renewable time)';
+$_LANG['cfclient.subdomains.renew_mode.cancel'] = 'Cancel';
+$_LANG['cfclient.subdomains.renew_mode.save'] = 'Save settings';
+$_LANG['cfclient.actions.renew.display.mode.login_required'] = 'Login information not found. Please refresh and try again.';
+$_LANG['cfclient.actions.renew.display.mode.saved.always'] = 'Renew button display mode has been set to: Always show.';
+$_LANG['cfclient.actions.renew.display.mode.saved.window_only'] = 'Renew button display mode has been set to: Auto show when renewable time is reached.';
+$_LANG['cfclient.actions.renew.display.mode.save_failed'] = 'Failed to save renew button display mode: %s';
 
 // Invite Registration
 $_LANG['cfclient.invite_registration.title'] = 'Invite Registration';

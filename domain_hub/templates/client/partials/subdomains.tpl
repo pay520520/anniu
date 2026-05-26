@@ -326,34 +326,33 @@
                                                         onclick="toggleSubdomainDetails(<?php echo $e->id; ?>)">
                                                     <i class="fas fa-eye"></i> <?php echo cfclient_lang('cfclient.subdomains.button.view_details', '查看详情', [], true); ?>
                                                 </button>
+                                                <?php
+                                                    $shouldRenderRenewButton = $renewButtonEligible;
+                                                    if ($shouldRenderRenewButton && $renewButtonDisplayMode === 'window_only') {
+                                                        $shouldRenderRenewButton = $canRenew || $canRedeemWithCharge;
+                                                    }
+                                                ?>
+                                                <?php if ($shouldRenderRenewButton && !$pendingDelete && !($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge')): ?>
+                                                <?php
+                                                    $renewButtonText = $canRedeemWithCharge
+                                                        ? cfclient_lang('cfclient.subdomains.button.renew.redeem', '赎回期续费（扣费￥%s）', [number_format($redemptionFeeSetting, 2)], true)
+                                                        : cfclient_lang('cfclient.subdomains.button.renew.free', '免费续期', [], true);
+                                                    $renewButtonClass = $canRedeemWithCharge ? 'btn btn-outline-warning btn-sm' : 'btn btn-outline-success btn-sm';
+                                                ?>
+                                                    <form method="post" class="d-inline-block align-middle">
+                                                        <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">
+                                                        <input type="hidden" name="action" value="renew">
+                                                        <input type="hidden" name="subdomain_id" value="<?php echo intval($e->id); ?>">
+                                                        <button type="submit" class="<?php echo $renewButtonClass; ?>">
+                                                            <i class="fas fa-redo"></i> <?php echo $renewButtonText; ?>
+                                                        </button>
+                                                    </form>
+                                                <?php elseif ($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge'): ?>
+                                                <a class="btn btn-outline-success btn-sm" href="<?php echo htmlspecialchars($redeemTicketUrl, ENT_QUOTES); ?>" target="_blank" rel="noopener noreferrer">
+                                                    <i class="fas fa-life-ring"></i> <?php echo cfclient_lang('cfclient.subdomains.button.redeem_ticket', '申请恢复域名', [], true); ?>
+                                                </a>
+                                                <?php endif; ?>
                                             </div>
-                                            <?php
-                                                $shouldRenderRenewButton = $renewButtonEligible;
-                                                if ($shouldRenderRenewButton && $renewButtonDisplayMode === 'window_only') {
-                                                    $shouldRenderRenewButton = $canRenew || $canRedeemWithCharge;
-                                                }
-                                            ?>
-                                            <?php if ($shouldRenderRenewButton && !$pendingDelete && !($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge')): ?>
-                                            <?php
-                                                $renewButtonText = $canRedeemWithCharge
-                                                    ? cfclient_lang('cfclient.subdomains.button.renew.redeem', '赎回期续费（扣费￥%s）', [number_format($redemptionFeeSetting, 2)], true)
-                                                    : cfclient_lang('cfclient.subdomains.button.renew.free', '免费续期', [], true);
-                                                $renewButtonClass = $canRedeemWithCharge ? 'btn btn-outline-warning btn-sm' : 'btn btn-outline-success btn-sm';
-                                            ?>
-
-                                                <form method="post" class="d-inline-block align-middle ms-1">
-                                                    <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">
-                                                    <input type="hidden" name="action" value="renew">
-                                                    <input type="hidden" name="subdomain_id" value="<?php echo intval($e->id); ?>">
-                                                    <button type="submit" class="<?php echo $renewButtonClass; ?>">
-                                                        <i class="fas fa-redo"></i> <?php echo $renewButtonText; ?>
-                                                    </button>
-                                                </form>
-                                            <?php elseif ($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge'): ?>
-                                            <a class="btn btn-outline-success btn-sm ms-2" href="<?php echo htmlspecialchars($redeemTicketUrl, ENT_QUOTES); ?>" target="_blank" rel="noopener noreferrer">
-                                                <i class="fas fa-life-ring"></i> <?php echo cfclient_lang('cfclient.subdomains.button.redeem_ticket', '申请恢复域名', [], true); ?>
-                                            </a>
-                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                     

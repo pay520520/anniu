@@ -341,7 +341,7 @@
                                                 $renewButtonClass = $canRedeemWithCharge ? 'btn btn-outline-warning btn-sm' : 'btn btn-outline-success btn-sm';
                                             ?>
 
-                                                <form method="post" class="mt-2">
+                                                <form method="post" class="d-inline-block align-middle ms-1">
                                                     <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">
                                                     <input type="hidden" name="action" value="renew">
                                                     <input type="hidden" name="subdomain_id" value="<?php echo intval($e->id); ?>">

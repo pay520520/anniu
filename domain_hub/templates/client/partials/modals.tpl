@@ -2681,7 +2681,7 @@ $permReasonMap = [
 </div>
 <?php endif; ?>
 <div class="modal fade" id="renewDisplayModeModal" tabindex="-1" aria-labelledby="renewDisplayModeModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered" style="margin-top: 3.5rem;">
         <div class="modal-content">
             <form method="post">
                 <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">

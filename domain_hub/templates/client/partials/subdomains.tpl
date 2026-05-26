@@ -30,7 +30,7 @@
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> <?php echo cfclient_lang('cfclient.subdomains.search.button', '搜索', [], true); ?></button>
                                 </div>
                                 <div class="col-auto">
-                                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#renewDisplayModeModal">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#renewDisplayModeModal">
                                         <i class="fas fa-sliders-h"></i> <?php echo cfclient_lang('cfclient.subdomains.renew_mode.button', '域名续期按钮显示设置', [], true); ?>
                                     </button>
                                 </div>

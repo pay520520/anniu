@@ -240,6 +240,42 @@ class CfClientActionService
             ];
         }
 
+        if ($_POST['action'] === 'set_renew_button_display_mode') {
+            if ($userid <= 0) {
+                $msg = self::actionText('renew.display.mode.login_required', '未找到登录信息，请刷新页面后重试。');
+                $msg_type = 'danger';
+            } else {
+                $mode = strtolower(trim((string) ($_POST['renew_button_display_mode'] ?? 'window_only')));
+                if (!in_array($mode, ['always', 'window_only'], true)) {
+                    $mode = 'window_only';
+                }
+                try {
+                    self::ensureUserPreferencesTable();
+                    $now = date('Y-m-d H:i:s');
+                    Capsule::table('mod_cloudflare_user_preferences')->updateOrInsert(
+                        ['userid' => (int) $userid],
+                        [
+                            'renew_button_display_mode' => $mode,
+                            'updated_at' => $now,
+                            'created_at' => $now,
+                        ]
+                    );
+                    $msg = $mode === 'always'
+                        ? self::actionText('renew.display.mode.saved.always', '续期按钮显示模式已设置为：固定显示。')
+                        : self::actionText('renew.display.mode.saved.window_only', '续期按钮显示模式已设置为：到免费续期窗口时显示。');
+                    $msg_type = 'success';
+                } catch (\Throwable $e) {
+                    $msg = self::actionText('renew.display.mode.save_failed', '续期按钮显示模式保存失败：%s', [$e->getMessage()]);
+                    $msg_type = 'danger';
+                }
+            }
+            return [
+                'msg' => $msg,
+                'msg_type' => $msg_type,
+                'registerError' => $registerError,
+            ];
+        }
+
         if ($_POST['action'] === 'root_verify_create') {
             if (!$rootVerifyEnabled) {
                 $msg = self::actionText('root_verify.disabled', '根域名验证功能未启用。');
@@ -5430,6 +5466,23 @@ if($_POST['action'] == 'replace_ns_group' && isset($_POST['subdomain_id'])) {
             return trim((string) ($row->email ?? ''));
         } catch (\Throwable $e) {
             return '';
+        }
+    }
+
+    private static function ensureUserPreferencesTable(): void
+    {
+        if (!Capsule::schema()->hasTable('mod_cloudflare_user_preferences')) {
+            Capsule::schema()->create('mod_cloudflare_user_preferences', function ($table) {
+                $table->increments('id');
+                $table->integer('userid')->unsigned()->unique();
+                $table->string('renew_button_display_mode', 32)->default('window_only');
+                $table->timestamps();
+                $table->index(['renew_button_display_mode']);
+            });
+        } elseif (!Capsule::schema()->hasColumn('mod_cloudflare_user_preferences', 'renew_button_display_mode')) {
+            Capsule::schema()->table('mod_cloudflare_user_preferences', function ($table) {
+                $table->string('renew_button_display_mode', 32)->default('window_only');
+            });
         }
     }
 

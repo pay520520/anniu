@@ -29,6 +29,11 @@
                                 <div class="col-auto">
                                     <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> <?php echo cfclient_lang('cfclient.subdomains.search.button', '搜索', [], true); ?></button>
                                 </div>
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#renewDisplayModeModal">
+                                        <i class="fas fa-sliders-h"></i> <?php echo cfclient_lang('cfclient.subdomains.renew_mode.button', '域名续期按钮显示设置', [], true); ?>
+                                    </button>
+                                </div>
                                 <?php if ($domainSearchTerm !== ''): ?>
                                 <div class="col-auto">
                                     <a href="<?php echo htmlspecialchars($domainSearchClearUrl, ENT_QUOTES); ?>" class="btn btn-outline-secondary"><i class="fas fa-undo"></i> <?php echo cfclient_lang('cfclient.subdomains.search.clear', '清除搜索', [], true); ?></a>
@@ -84,6 +89,10 @@
                                     if ($redemptionDaysSetting < 0) { $redemptionDaysSetting = 0; }
                                     $redemptionSecondsSetting = $redemptionDaysSetting * 86400;
                                     $rootMaintenanceMap = $rootMaintenanceMap ?? [];
+                                    $renewButtonDisplayMode = strtolower(trim((string) ($renewButtonDisplayMode ?? 'window_only')));
+                                    if (!in_array($renewButtonDisplayMode, ['always', 'window_only'], true)) {
+                                        $renewButtonDisplayMode = 'window_only';
+                                    }
                                     foreach($existing as $e):
                                         $neverExpires = intval($e->never_expires ?? 0) === 1;
                                         $expiresRaw = $e->expires_at ?? null;
@@ -317,28 +326,33 @@
                                                         onclick="toggleSubdomainDetails(<?php echo $e->id; ?>)">
                                                     <i class="fas fa-eye"></i> <?php echo cfclient_lang('cfclient.subdomains.button.view_details', '查看详情', [], true); ?>
                                                 </button>
+                                                <?php
+                                                    $shouldRenderRenewButton = $renewButtonEligible;
+                                                    if ($shouldRenderRenewButton && $renewButtonDisplayMode === 'window_only') {
+                                                        $shouldRenderRenewButton = $canRenew || $canRedeemWithCharge;
+                                                    }
+                                                ?>
+                                                <?php if ($shouldRenderRenewButton && !$pendingDelete && !($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge')): ?>
+                                                <?php
+                                                    $renewButtonText = $canRedeemWithCharge
+                                                        ? cfclient_lang('cfclient.subdomains.button.renew.redeem', '赎回期续费（扣费￥%s）', [number_format($redemptionFeeSetting, 2)], true)
+                                                        : cfclient_lang('cfclient.subdomains.button.renew.free', '免费续期', [], true);
+                                                    $renewButtonClass = $canRedeemWithCharge ? 'btn btn-outline-warning btn-sm' : 'btn btn-outline-success btn-sm';
+                                                ?>
+                                                    <form method="post" class="d-inline-block align-middle">
+                                                        <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">
+                                                        <input type="hidden" name="action" value="renew">
+                                                        <input type="hidden" name="subdomain_id" value="<?php echo intval($e->id); ?>">
+                                                        <button type="submit" class="<?php echo $renewButtonClass; ?>">
+                                                            <i class="fas fa-redo"></i> <?php echo $renewButtonText; ?>
+                                                        </button>
+                                                    </form>
+                                                <?php elseif ($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge'): ?>
+                                                <a class="btn btn-outline-success btn-sm" href="<?php echo htmlspecialchars($redeemTicketUrl, ENT_QUOTES); ?>" target="_blank" rel="noopener noreferrer">
+                                                    <i class="fas fa-life-ring"></i> <?php echo cfclient_lang('cfclient.subdomains.button.redeem_ticket', '申请恢复域名', [], true); ?>
+                                                </a>
+                                                <?php endif; ?>
                                             </div>
-                                            <?php if ($renewButtonEligible && !$pendingDelete && !($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge')): ?>
-                                            <?php
-                                                $renewButtonText = $canRedeemWithCharge
-                                                    ? cfclient_lang('cfclient.subdomains.button.renew.redeem', '赎回期续费（扣费￥%s）', [number_format($redemptionFeeSetting, 2)], true)
-                                                    : cfclient_lang('cfclient.subdomains.button.renew.free', '免费续期', [], true);
-                                                $renewButtonClass = $canRedeemWithCharge ? 'btn btn-outline-warning btn-sm' : 'btn btn-outline-success btn-sm';
-                                            ?>
-
-                                                <form method="post" class="mt-2">
-                                                    <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">
-                                                    <input type="hidden" name="action" value="renew">
-                                                    <input type="hidden" name="subdomain_id" value="<?php echo intval($e->id); ?>">
-                                                    <button type="submit" class="<?php echo $renewButtonClass; ?>">
-                                                        <i class="fas fa-redo"></i> <?php echo $renewButtonText; ?>
-                                                    </button>
-                                                </form>
-                                            <?php elseif ($inRedemptionWindow && $redemptionModeSetting !== 'auto_charge'): ?>
-                                            <a class="btn btn-outline-success btn-sm ms-2" href="<?php echo htmlspecialchars($redeemTicketUrl, ENT_QUOTES); ?>" target="_blank" rel="noopener noreferrer">
-                                                <i class="fas fa-life-ring"></i> <?php echo cfclient_lang('cfclient.subdomains.button.redeem_ticket', '申请恢复域名', [], true); ?>
-                                            </a>
-                                            <?php endif; ?>
                                         </td>
                                     </tr>
                                     
@@ -670,5 +684,6 @@
                     <?php endif; ?>
                 </div>
             </div>
+
             
             <!-- 域名知识小贴士 -->

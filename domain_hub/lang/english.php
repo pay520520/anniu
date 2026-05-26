@@ -211,6 +211,22 @@ $_LANG['cfclient.subdomains.button.view_details'] = 'View details';
 $_LANG['cfclient.subdomains.button.dns_unlock'] = 'DNS Unlock';
 $_LANG['cfclient.subdomains.button.invite_registration'] = 'Invite Registration';
 $_LANG['cfclient.subdomains.button.renew.free'] = 'Renew for free';
+$_LANG['cfclient.subdomains.renew_mode.button'] = 'Domain Renew Button Display Settings';
+$_LANG['cfclient.subdomains.renew_mode.modal_title'] = 'Free-Renew Domain Action Button Display Settings';
+$_LANG['cfclient.subdomains.renew_mode.window_only'] = 'Auto show when renewable time is reached (Recommended)';
+$_LANG['cfclient.subdomains.renew_mode.always'] = 'Always show (visible even before renewable time)';
+$_LANG['cfclient.subdomains.renew_mode.cancel'] = 'Cancel';
+$_LANG['cfclient.subdomains.renew_mode.save'] = 'Save settings';
+$_LANG['cfclient.subdomains.renew_mode.faq.q1'] = 'Q: Is domain renewal free?';
+$_LANG['cfclient.subdomains.renew_mode.faq.a1'] = 'A: Yes, domain renewal is completely free.';
+$_LANG['cfclient.subdomains.renew_mode.faq.q2'] = 'Q: When can I renew a domain?';
+$_LANG['cfclient.subdomains.renew_mode.faq.a2'] = 'A: Within 180 days before expiry, you can renew via the console or one-click API.';
+$_LANG['cfclient.subdomains.renew_mode.faq.q3'] = 'Q: Why do some domains not show a renew option?';
+$_LANG['cfclient.subdomains.renew_mode.faq.a3'] = 'A: Domains in pending-delete state or permanently valid domains do not show renew options.';
+$_LANG['cfclient.actions.renew.display.mode.login_required'] = 'Login information not found. Please refresh and try again.';
+$_LANG['cfclient.actions.renew.display.mode.saved.always'] = 'Renew button display mode has been set to: Always show.';
+$_LANG['cfclient.actions.renew.display.mode.saved.window_only'] = 'Renew button display mode has been set to: Auto show when renewable time is reached.';
+$_LANG['cfclient.actions.renew.display.mode.save_failed'] = 'Failed to save renew button display mode: %s';
 
 // Invite Registration
 $_LANG['cfclient.invite_registration.title'] = 'Invite Registration';

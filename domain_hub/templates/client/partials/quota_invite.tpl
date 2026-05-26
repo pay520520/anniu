@@ -27,7 +27,7 @@ $inviteLoadingLabel = $cfInviteText('cfclient.invite.table.loading', '加载中.
     .cfmod-quota-ticker {
         overflow: hidden;
         border: 1px solid rgba(255,193,7,.35);
-        margin-top: .25rem;
+        margin-top: calc(.25rem - 15px);
         border-radius: .5rem;
         max-width: 100%;
     }

@@ -2680,6 +2680,49 @@ $permReasonMap = [
     </div>
 </div>
 <?php endif; ?>
+<div class="modal fade" id="renewDisplayModeModal" tabindex="-1" aria-labelledby="renewDisplayModeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post">
+                <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">
+                <input type="hidden" name="action" value="set_renew_button_display_mode">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="renewDisplayModeModalLabel"><?php echo $modalText('cfclient.subdomains.renew_mode.modal_title', '域名免费续期操作按钮显示设置'); ?></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php $currentRenewMode = strtolower(trim((string) ($renewButtonDisplayMode ?? 'window_only'))); ?>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="radio" name="renew_button_display_mode" id="renewModeWindowOnly" value="window_only" <?php echo $currentRenewMode !== 'always' ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="renewModeWindowOnly">
+                            <?php echo $modalText('cfclient.subdomains.renew_mode.window_only', '到达可续期时间时自动显示（推荐）'); ?>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="renew_button_display_mode" id="renewModeAlways" value="always" <?php echo $currentRenewMode === 'always' ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="renewModeAlways">
+                            <?php echo $modalText('cfclient.subdomains.renew_mode.always', '始终显示（未到可续期时间也显示）'); ?>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?php echo $modalText('cfclient.subdomains.renew_mode.cancel', '取消'); ?></button>
+                    <button type="submit" class="btn btn-primary"><?php echo $modalText('cfclient.subdomains.renew_mode.save', '保存设置'); ?></button>
+                </div>
+            </form>
+            <div class="px-3 pb-3">
+                <div class="small text-muted border-top pt-2">
+                    <div><strong><?php echo $modalText('cfclient.subdomains.renew_mode.faq.q1', 'Q：域名续期是免费的吗？'); ?></strong></div>
+                    <div class="mb-2"><?php echo $modalText('cfclient.subdomains.renew_mode.faq.a1', 'A：是的，域名续期操作是完全免费的。'); ?></div>
+                    <div><strong><?php echo $modalText('cfclient.subdomains.renew_mode.faq.q2', 'Q：什么时候可以对域名进行续期？'); ?></strong></div>
+                    <div class="mb-2"><?php echo $modalText('cfclient.subdomains.renew_mode.faq.a2', 'A：域名到期前 180 天之内，可通过控制台或使用 API 一键续期。'); ?></div>
+                    <div><strong><?php echo $modalText('cfclient.subdomains.renew_mode.faq.q3', 'Q：为什么有的域名不显示续期选项？'); ?></strong></div>
+                    <div><?php echo $modalText('cfclient.subdomains.renew_mode.faq.a3', 'A：域名处于待删除状态或永久有效状态时，不会显示续期选项。'); ?></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <script>
 window.__rootVerifyLockMap = <?php echo json_encode($rootVerifyActiveLocks, JSON_UNESCAPED_UNICODE); ?>;
 if (typeof updateRootVerifyHostPreview === 'function') { updateRootVerifyHostPreview(); }

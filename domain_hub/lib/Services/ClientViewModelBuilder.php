@@ -208,6 +208,7 @@ class CfClientViewModelBuilder
             : strtolower(trim((string) ($moduleSettings['client_domain_delete_mode'] ?? 'disabled')));
         $globals['clientDeleteMode'] = $clientDeleteMode;
         $globals['clientDeleteEnabled'] = $clientDeleteMode !== 'disabled';
+        $globals['renewButtonDisplayMode'] = self::resolveRenewButtonDisplayMode($userId);
 
         // VPN检测配置
         $vpnDetectionEnabled = cfmod_setting_enabled($moduleSettings['enable_vpn_detection'] ?? '0');
@@ -764,6 +765,45 @@ class CfClientViewModelBuilder
             'globals' => $globals,
             'meta' => ['template_variables' => array_keys($globals)],
         ];
+    }
+
+    private static function ensureUserPreferencesTable(): void
+    {
+        try {
+            if (!Capsule::schema()->hasTable('mod_cloudflare_user_preferences')) {
+                Capsule::schema()->create('mod_cloudflare_user_preferences', function ($table) {
+                    $table->increments('id');
+                    $table->integer('userid')->unsigned()->unique();
+                    $table->string('renew_button_display_mode', 32)->default('window_only');
+                    $table->timestamps();
+                    $table->index(['renew_button_display_mode']);
+                });
+            } elseif (!Capsule::schema()->hasColumn('mod_cloudflare_user_preferences', 'renew_button_display_mode')) {
+                Capsule::schema()->table('mod_cloudflare_user_preferences', function ($table) {
+                    $table->string('renew_button_display_mode', 32)->default('window_only');
+                });
+            }
+        } catch (\Throwable $e) {
+        }
+    }
+
+    private static function resolveRenewButtonDisplayMode(int $userId): string
+    {
+        self::ensureUserPreferencesTable();
+        if ($userId <= 0) {
+            return 'window_only';
+        }
+        try {
+            $raw = strtolower(trim((string) Capsule::table('mod_cloudflare_user_preferences')
+                ->where('userid', $userId)
+                ->value('renew_button_display_mode')));
+            if (!in_array($raw, ['always', 'window_only'], true)) {
+                return 'window_only';
+            }
+            return $raw;
+        } catch (\Throwable $e) {
+            return 'window_only';
+        }
     }
 
     private static function buildFeatureCardsRegistry(array $flags): array

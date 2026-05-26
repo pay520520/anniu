@@ -211,6 +211,10 @@ $_LANG['cfclient.subdomains.button.view_details'] = 'View details';
 $_LANG['cfclient.subdomains.button.dns_unlock'] = 'DNS Unlock';
 $_LANG['cfclient.subdomains.button.invite_registration'] = 'Invite Registration';
 $_LANG['cfclient.subdomains.button.renew.free'] = 'Renew for free';
+$_LANG['cfclient.subdomains.renew_mode.button'] = 'Renewal Domain Display Settings';
+$_LANG['cfclient.subdomains.renew_mode.modal_title'] = 'Free-Renew Domain Action Button Display Settings';
+$_LANG['cfclient.subdomains.renew_mode.window_only'] = 'Auto show when free-renew time arrives (Recommended)';
+$_LANG['cfclient.subdomains.renew_mode.always'] = 'Always show (visible even before renew time)';
 
 // Invite Registration
 $_LANG['cfclient.invite_registration.title'] = 'Invite Registration';

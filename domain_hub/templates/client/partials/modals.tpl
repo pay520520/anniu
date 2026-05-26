@@ -2687,7 +2687,7 @@ $permReasonMap = [
                 <input type="hidden" name="cfmod_csrf_token" value="<?php echo htmlspecialchars($_SESSION['cfmod_csrf'] ?? ''); ?>">
                 <input type="hidden" name="action" value="set_renew_button_display_mode">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="renewDisplayModeModalLabel"><?php echo $modalText('cfclient.subdomains.renew_mode.modal_title', '免费续期显示设置'); ?></h5>
+                    <h5 class="modal-title" id="renewDisplayModeModalLabel"><?php echo $modalText('cfclient.subdomains.renew_mode.modal_title', '域名免费续期操作按钮显示设置'); ?></h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -2695,13 +2695,13 @@ $permReasonMap = [
                     <div class="form-check mb-2">
                         <input class="form-check-input" type="radio" name="renew_button_display_mode" id="renewModeWindowOnly" value="window_only" <?php echo $currentRenewMode !== 'always' ? 'checked' : ''; ?>>
                         <label class="form-check-label" for="renewModeWindowOnly">
-                            <?php echo $modalText('cfclient.subdomains.renew_mode.window_only', '到免费续期窗口时显示（推荐）'); ?>
+                            <?php echo $modalText('cfclient.subdomains.renew_mode.window_only', '到免费续期时间时自动显示（推荐）'); ?>
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="renew_button_display_mode" id="renewModeAlways" value="always" <?php echo $currentRenewMode === 'always' ? 'checked' : ''; ?>>
                         <label class="form-check-label" for="renewModeAlways">
-                            <?php echo $modalText('cfclient.subdomains.renew_mode.always', '固定显示（当前模式）'); ?>
+                            <?php echo $modalText('cfclient.subdomains.renew_mode.always', '始终显示(域名未到续期时间也显示)'); ?>
                         </label>
                     </div>
                 </div>

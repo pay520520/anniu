@@ -210,6 +210,10 @@ $_LANG['cfclient.subdomains.button.view_details'] = '查看详情';
 $_LANG['cfclient.subdomains.button.dns_unlock'] = 'DNS解锁';
 $_LANG['cfclient.subdomains.button.invite_registration'] = '邀请注册';
 $_LANG['cfclient.subdomains.button.renew.free'] = '免费续期';
+$_LANG['cfclient.subdomains.renew_mode.button'] = '续期域名显示设置';
+$_LANG['cfclient.subdomains.renew_mode.modal_title'] = '域名免费续期操作按钮显示设置';
+$_LANG['cfclient.subdomains.renew_mode.window_only'] = '到免费续期时间时自动显示（推荐）';
+$_LANG['cfclient.subdomains.renew_mode.always'] = '始终显示(域名未到续期时间也显示)';
 
 // 邀请注册功能
 $_LANG['cfclient.invite_registration.title'] = '邀请注册';
